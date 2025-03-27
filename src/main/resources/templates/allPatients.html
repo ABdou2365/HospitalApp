@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Patients Page</title>
+<!--   the rel attribute is a naming  relationship of the linked document to the current document. -->
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+<div class="p-3 m-2">
+    <div class="card-header"> List des patients</div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <td>Id</td>
+                <td>First Name</td>
+                <td>Last Name</td>
+                <td>Date Of Birth</td>
+                <td>score</td>
+                <td>Is Sick</td>
+                <td></td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p:${patients}">
+                <td th:text="${p.id}"></td>
+                <td th:text="${p.firstName}"></td>
+                <td th:text="${p.lastName}"></td>
+                <td th:text="${p.dateOfBirth}"></td>
+                <td th:text="${p.score}"></td>
+                <td th:text="${p.isSick()}"></td>
+                <td>
+             <!--      @{deletePatient(id=${p.id})}  we define the req params between the parentheses (id) -->
+
+                    <a onclick="return confirm('Are you sure?')" class="btn btn-danger"  th:href="@{deletePatient(id=${p.id})}">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
