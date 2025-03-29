@@ -57,7 +57,7 @@
                     </a>
                 </li>
                 <li class="page-item" th:each="page,index : ${totalPages}">
-                    <a class="page-link" th:text="${index.count}" th:href="@{AllPatients(page=${index.index})}"></a>
+                    <a th:class="${ index.index == currentPage ? 'page-link active' : 'page-link'} "  th:text="${index.count}" th:href="@{AllPatients(page=${index.index})}"></a>
                 </li>
                 <li class="page-item">
                     <a class="page-link"
