@@ -3,12 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>All Patients Page</title>
+
 <!--   the rel attribute is a naming  relationship of the linked document to the current document. -->
+
     <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/5.3.3/css/bootstrap.min.css">
 </head>
 <body>
+
 <div class="p-3 m-2">
     <div class="card-header p-3 m-2"> List des patients</div>
+
+    <!-- HERE WHEN THE USER SUBMIT AUTOMATICALLY SEND THE REQUEST WITH THE KEYWORD VALUE AS A PARAMETER
+    AllPatients?keyword=VALUE-EXAMPLE -->
+
+    <form method="get" th:action="@{AllPatients}">
+        <div class="input-group mb-3">
+            <button class="input-group-text pointer-event" id="basic-addon1">Search @</button>
+            <input type="text" class="form-control" placeholder="Enter Username" name="keyword">
+        </div>
+    </form>
+
     <div class="card-body">
         <table class="table">
             <thead>
@@ -31,44 +45,48 @@
                 <td th:text="${p.score}"></td>
                 <td th:text="${p.isSick()}"></td>
                 <td>
+
              <!--      @{deletePatient(id=${p.id})}  we define the req params between the parentheses (id) -->
 
-                    <a onclick="return confirm('Are you sure?')" class="btn btn-danger"  th:href="@{deletePatient(id=${p.id})}">Delete</a>
+            <!--                      returning the keyword and current page because
+                we don't want to lose the search we're searching and also the current Page
+                -->
+                    <a onclick="return confirm('Are you sure?')"
+                       class="btn btn-danger"
+                       th:href="@{deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}"
+                    >Delete</a>
                 </td>
             </tr>
             </tbody>
         </table>
-<!--        <nav aria-label="Page navigation example">-->
-<!--            <ul class="pagination">-->
-<!--                <li class="page-item" th:each="page,index : ${totalPages}">-->
-<!--                    <a class="page-link" th:text="${index.count}" th:href="@{AllPatients(page=${index.index})}"></a></li>-->
-<!--            </ul>-->
-<!--        </nav>-->
+
         <nav aria-label="Page navigation example">
             <ul class="pagination d-flex justify-content-center">
-                <li class="page-item">
-                    <a class="page-link"
-                       th:href="${currentPage > 0}
-                       ? @{AllPatients(page=${currentPage - 1})}
-                       : '#'"
-                       aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                </li>
+<!--                <li class="page-item">-->
+<!--                    <a class="page-link"-->
+<!--                       th:href="${currentPage > 0}-->
+<!--                       ? @{AllPatients(page=${currentPage - 1}))}-->
+<!--                       : '#'"-->
+<!--                       aria-label="Previous">-->
+<!--                        <span aria-hidden="true">&laquo;</span>-->
+<!--                        <span class="sr-only">Previous</span>-->
+<!--                    </a>-->
+<!--                </li>-->
                 <li class="page-item" th:each="page,index : ${totalPages}">
-                    <a th:class="${ index.index == currentPage ? 'page-link active' : 'page-link'} "  th:text="${index.count}" th:href="@{AllPatients(page=${index.index})}"></a>
+                    <a th:class="${ index.index == currentPage ? 'page-link active' : 'page-link'} "
+                       th:text="${index.count}"
+                       th:href="@{AllPatients(page=${index.index},keyword=${keyword})}"></a>
                 </li>
-                <li class="page-item">
-                    <a class="page-link"
-                       th:href="${currentPage < totalPages.length - 1}
-                       ? @{AllPatients(page=${currentPage + 1})}
-                       : '#'"
-                       aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </li>
+<!--                <li class="page-item">-->
+<!--                    <a class="page-link"-->
+<!--                       th:href="${currentPage < totalPages.length - 1}-->
+<!--                       ? @{AllPatients(page=${currentPage + 1}))}-->
+<!--                       : '#'"-->
+<!--                       aria-label="Next">-->
+<!--                        <span aria-hidden="true">&raquo;</span>-->
+<!--                        <span class="sr-only">Next</span>-->
+<!--                    </a>-->
+<!--                </li>-->
             </ul>
         </nav>
     </div>
