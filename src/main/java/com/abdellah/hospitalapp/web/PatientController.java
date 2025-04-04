@@ -55,6 +55,15 @@ public class PatientController {
 
     }
 
+    @GetMapping("/EditPatient")
+    public String editPatient(@RequestParam("id") Long id, Model model) {
+        Patient patient = patientRepository.findById(id).get();
+        model.addAttribute("patient", patient);
+        return "editPatient";
+    }
+
+
+
 
     // ON ajoute un objet vide Patient au modèle,
     // ce qui permet à Thymeleaf de le remplir dans le formulaire (name="")
