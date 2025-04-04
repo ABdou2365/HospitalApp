@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="layout1.html">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un patient</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="p-3">
+        <div class="card">
+            <div class="card-header">Ajouter un patient</div>
+            <div class="card-body">
+                    <!--
+                    Spring Boot associe automatiquement les champs du formulaire
+                    aux attributs de l'objet Patient basé sur les noms des name
+                    dans le formulaire HTML.
+                    -->
+                <form method="post" th:action="@{savePatient}" >
+                    <div class="form-group">
+                        <label for="firstName">Nom</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Entrez le nom" th:value="${patient.firstName}" >
+                        <span class="text-danger" th:errors="${patient.firstName}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Prénom</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Entrez le prénom"  th:value="${ patient.lastName}">
+                        <span class="text-danger" th:errors="${patient.lastName}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="dateOfBirth">Date de naissance</label>
+                        <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" th:value="${patient.dateOfBirth}" required>
+                        <span class="text-danger" th:errors="${patient.dateOfBirth}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="score">Score</label>
+                        <input type="number" class="form-control" id="score" name="score" placeholder="Entrez le score" th:value="${patient.score}" >
+                        <span class="text-danger" th:errors="${patient.score}"></span>
+                    </div>
+                    <div class="form-check">
+                        <input type="hidden" name="isSick" th:value="${patient.isSick}">
+                        <input type="checkbox" class="form-check-input" id="isSick" name="isSick" th:checked="${patient.isSick}">
+                        <label class="form-check-label" for="isSick">Malade ?</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

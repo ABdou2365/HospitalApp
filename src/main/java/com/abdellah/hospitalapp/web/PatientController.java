@@ -4,11 +4,14 @@ package com.abdellah.hospitalapp.web;
 import com.abdellah.hospitalapp.entities.Patient;
 import com.abdellah.hospitalapp.repository.PatientRepository;
 
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -50,6 +53,24 @@ public class PatientController {
         // We use here the redirect because we want after the deletion we redirect to the main page (AllPatients)
         return "redirect:/AllPatients?page="+page+"&keyword="+keyword;
 
+    }
+
+
+    // ON ajoute un objet vide Patient au modèle,
+    // ce qui permet à Thymeleaf de le remplir dans le formulaire (name="")
+    @GetMapping("/AddPatient")
+    public String addPatient(Model model) {
+        model.addAttribute("patient", new Patient());
+        return "formPatient";
+    }
+
+    @PostMapping("/savePatient")
+    public String savePatient(@Valid Patient patient, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "formPatient";
+        }
+        patientRepository.save(patient);
+        return "redirect:/AllPatients";
     }
 
 

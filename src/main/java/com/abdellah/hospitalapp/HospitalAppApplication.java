@@ -2,6 +2,7 @@ package com.abdellah.hospitalapp;
 
 import com.abdellah.hospitalapp.entities.Patient;
 import com.abdellah.hospitalapp.repository.PatientRepository;
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -60,4 +61,8 @@ public class HospitalAppApplication {
 //                patients.forEach(p -> System.out.println(p.toString()));
 //            };
 //    }
+    @Bean
+    public LayoutDialect layoutDialect() {
+        return new LayoutDialect();
+    }
 }
