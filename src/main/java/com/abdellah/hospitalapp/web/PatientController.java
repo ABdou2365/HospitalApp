@@ -81,6 +81,4 @@ public class PatientController {
         patientRepository.save(patient);
         return "redirect:/AllPatients";
     }
-
-
 }
