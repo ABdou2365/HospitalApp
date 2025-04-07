@@ -30,8 +30,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .formLogin(Customizer.withDefaults())
+                .formLogin(login->login.loginPage("/login").defaultSuccessUrl("/",true).permitAll())
+                .rememberMe(remember ->
+                        remember.rememberMeParameter("remember-me"))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/webjars/**", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
