@@ -29,12 +29,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.formLogin(Customizer.withDefaults()).
-        authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN"))
-        .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/user/**").hasAnyRole("USER","ADMIN"))
-        .authorizeHttpRequests(
-                authorizeRequests -> authorizeRequests.anyRequest().authenticated()).build();
+        return http
+                .formLogin(Customizer.withDefaults())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                        .anyRequest().authenticated()
+                )
+                .exceptionHandling(ex -> ex.accessDeniedPage("/notAuthorized"))
+                .build();
     }
+
 
 
     // We add @Bean to the passwordEncoder() method so that Spring can manage it

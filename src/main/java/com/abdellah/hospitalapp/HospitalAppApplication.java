@@ -16,11 +16,12 @@ import java.util.List;
 @SpringBootApplication
 public class HospitalAppApplication {
 
-    private final PatientRepository patientRepository;
+//    private final PatientRepository patientRepository;
 
-    public HospitalAppApplication(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
-    }
+//    public HospitalAppApplication(PatientRepository patientRepository) {
+//
+//        this.patientRepository = patientRepository;
+//    }
 
 
     public static void main(String[] args) {
