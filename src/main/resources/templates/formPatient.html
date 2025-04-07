@@ -17,7 +17,7 @@
                     aux attributs de l'objet Patient basé sur les noms des name
                     dans le formulaire HTML.
                     -->
-                <form method="post" th:action="@{savePatient}" >
+                <form method="post" th:action="@{/admin/savePatient}" >
                     <div class="form-group">
                         <label for="firstName">Nom</label>
                         <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Entrez le nom" th:value="${patient.firstName}" >

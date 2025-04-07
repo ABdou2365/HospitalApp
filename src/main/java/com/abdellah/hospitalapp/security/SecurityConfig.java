@@ -17,21 +17,21 @@ public class SecurityConfig {
 
     @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
-        System.out.println(passwordEncoder().encode("1234"));
         return new InMemoryUserDetailsManager(
                 User.withUsername("user1").
                         password(passwordEncoder().encode("12345678")).roles("USER").build(),
                 User.withUsername("user2").
                         password(passwordEncoder().encode("12345678")).roles("USER").build(),
                 User.withUsername("admin").
-                        password(passwordEncoder().encode("12345678")).roles("ADMIN").build()
+                        password(passwordEncoder().encode("12345678")).roles("USER","ADMIN").build()
         );
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.formLogin(Customizer.withDefaults()).
-        authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/deletePatient/**").hasRole("ADMIN"))
+        authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/admin/**").hasRole("ADMIN"))
+        .authorizeHttpRequests(authorizeRequests -> authorizeRequests.requestMatchers("/user/**").hasAnyRole("USER","ADMIN"))
         .authorizeHttpRequests(
                 authorizeRequests -> authorizeRequests.anyRequest().authenticated()).build();
     }
