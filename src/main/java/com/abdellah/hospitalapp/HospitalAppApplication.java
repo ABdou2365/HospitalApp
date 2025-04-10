@@ -2,6 +2,12 @@ package com.abdellah.hospitalapp;
 
 import com.abdellah.hospitalapp.entities.Patient;
 import com.abdellah.hospitalapp.repository.PatientRepository;
+import com.abdellah.hospitalapp.security.entities.AppRole;
+import com.abdellah.hospitalapp.security.entities.AppUser;
+import com.abdellah.hospitalapp.security.repo.AppRoleRepository;
+import com.abdellah.hospitalapp.security.repo.AppUserRepository;
+import com.abdellah.hospitalapp.security.service.SecurityService;
+import lombok.AllArgsConstructor;
 import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.apache.catalina.core.ApplicationContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +26,11 @@ import java.util.Date;
 import java.util.List;
 
 @SpringBootApplication
+@AllArgsConstructor
 public class HospitalAppApplication {
+
+    SecurityService securityService;
+    PasswordEncoder passwordEncoder;
 
 //    private final PatientRepository patientRepository;
 
@@ -34,7 +44,33 @@ public class HospitalAppApplication {
         SpringApplication.run(HospitalAppApplication.class, args);
     }
 
-    @Bean
+
+
+    //@Bean
+    CommandLineRunner commandLineRunner() {
+        return args -> {
+            securityService.addNewRole("USER");
+            securityService.addNewRole("ADMIN");
+            securityService.addNewUser("user111",
+                    passwordEncoder.encode("123456"),
+                    "user1@gmail.com",
+                    passwordEncoder.encode("123456"));
+            securityService.addNewUser("user222",
+                    passwordEncoder.encode("123456"),
+                    "user2@gmail.com",
+                    passwordEncoder.encode("123456"));
+            securityService.addNewUser("admin111",
+                    passwordEncoder.encode("123456"),
+                    "admin1@gmail.com",
+                    passwordEncoder.encode("123456"));
+            securityService.AddRoleToUser("user111","USER");
+            securityService.AddRoleToUser("user222","ADMIN");
+            securityService.AddRoleToUser("admin111","USER");
+            securityService.AddRoleToUser("admin111","ADMIN");
+        };
+    }
+
+    //@Bean
     CommandLineRunner commandLineRunner(JdbcUserDetailsManager userDetailsManager) {
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         UserDetails user11 = userDetailsManager.loadUserByUsername("user11");

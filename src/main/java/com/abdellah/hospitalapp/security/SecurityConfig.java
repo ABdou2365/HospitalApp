@@ -1,5 +1,7 @@
 package com.abdellah.hospitalapp.security;
 
+import com.abdellah.hospitalapp.security.service.UserDetailsServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,14 +18,21 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SecurityConfig {
 
-    @Bean
+
+    UserDetailsServiceImpl userDetailsService;
+
+
+    // THIS IS A JDBC USER DETAILS AUTHENTICATION
+    // @Bean
     public JdbcUserDetailsManager userDetailsManager(DataSource dataSource) {
         return new JdbcUserDetailsManager(dataSource);
     }
 
 
+    // THIS IS IN MEMORY AUTHENTICATION
     //@Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager() {
         return new InMemoryUserDetailsManager(
@@ -48,6 +57,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
+                .userDetailsService(userDetailsService)
                 .exceptionHandling(ex -> ex.accessDeniedPage("/notAuthorized"))
                 .build();
     }
